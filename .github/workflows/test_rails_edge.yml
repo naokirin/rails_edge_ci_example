@@ -1,0 +1,46 @@
+name: Test rails edge
+
+on:
+  workflow_dispatch:
+  # 定期実行の場合は以下を設定する
+  # schedule:
+  #  - cron: '0 * * * *'
+env:
+  BUNDLE_GEMFILE: gemfiles/rails_edge.gemfile
+  RAILS_ENV: test
+  TZ: 'Asia/Tokyo'
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: 1234
+          MYSQL_ROOT_HOST: '%'
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+          MYSQL_DATABASE: rails_edge_ci_example_test
+        ports:
+          - 3306:3306
+        options: --health-cmd "mysqladmin ping -h 127.0.0.1" --health-interval 20s --health-timeout 10s --health-retries 10
+
+    steps:
+      - name: Checkout from Repository
+        uses: actions/checkout@v2
+        with:
+          ref: main
+      - name: Setup Ruby version
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 3.1.x
+      - name: bundle install
+        run: |
+          bundle install --jobs 4 --retry 3
+      - name: Setup Database
+        run: |
+          bundle exec rake db:create
+          bundle exec rake db:migrate
+      - name: RSpec
+        run: bundle exec rspec
