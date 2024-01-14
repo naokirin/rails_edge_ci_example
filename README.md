@@ -1,24 +1,10 @@
-# README
+# Rails edge ci example
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+RailsプロジェクトをRails edgeでGithub Actionを実行するサンプルプロジェクト
 
-Things you may want to cover:
+## 参考
 
-* Ruby version
+Timee Product Team Blog
+Rails edgeでCIを回し始めました 〜設定方法編〜
+https://tech.timee.co.jp/entry/2023/07/19/113925
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
